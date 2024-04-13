@@ -3,7 +3,7 @@ name: Migration
 on:
   push:
     branches:
-      - migration
+      - prisma/*
 
 jobs:
   migration:
@@ -12,10 +12,10 @@ jobs:
       RDB_URL: ${{ secrets.RDB_URL }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Install nodejs
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
+          node-version: 20
 
       - name: Migration pre notification
         uses: 8398a7/action-slack@v3
@@ -37,11 +37,38 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
 
-      - name: Prisma migration force reset
+      - name: Cache dependency
+        uses: actions/cache@v3
+        id: cache
+        with:
+          # 'node_modules를 캐싱
+          path: node_modules
+          # yarn.lock의 파일이 바뀔때마다 다시 캐싱
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Extract branch name for Prisma command
+        id: extract-branch
         run: |
-          npm install -g prisma
-          npx prisma generate
-          npx prisma db push
+          PRISMA_COMMAND=${GITHUB_REF#refs/heads/prisma/}
+          echo "PRISMA_COMMAND=${PRISMA_COMMAND}" >> $GITHUB_ENV
+
+      - name: Execute Prisma Command Based on Branch Name
+        run: |
+          if [[ "$PRISMA_COMMAND" == "force-reset" ]]; then
+            npx prisma db push --force-reset
+          elif [[ "$PRISMA_COMMAND" == "migrate" ]]; then
+            npx prisma migrate deploy
+          elif [[ "$PRISMA_COMMAND" == "seed" ]]; then
+            npx prisma db seed
+          else
+            echo "No specific Prisma command for this branch"
+          fi
 
       - name: Migration post notification
         uses: 8398a7/action-slack@v3
