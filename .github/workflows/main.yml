@@ -69,6 +69,8 @@ jobs:
           npm install -g prisma
           npx prisma generate
           npx prisma db push
+        env:
+          RDB_URL: ${{ secrets.RDB_URL }}
 
       - name: Run unit tests
         run: yarn test
