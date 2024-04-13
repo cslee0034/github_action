@@ -3,9 +3,9 @@ FROM node:21-bullseye-slim as build
 WORKDIR /app
 
 COPY package*.json ./
+COPY prisma ./prisma/
 
 RUN npm install
-COPY prisma ./prisma/
 
 COPY . .
 RUN npm run build
