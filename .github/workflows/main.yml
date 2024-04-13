@@ -36,8 +36,7 @@ jobs:
                 color: 'good',
                 text: `${process.env.AS_WORKFLOW} at ${process.env.AS_REPO} by ${process.env.AS_AUTHOR}`,
                 fields: [{
-                  title: 'starting test : ',
-                  value: `${{ env.commit_msg_str }}`,
+                  title: 'starting test...',
                   short: false
                 }]
               }]
