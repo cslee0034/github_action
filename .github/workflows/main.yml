@@ -90,14 +90,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
-
-  end-to-end-test:
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.3
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test
-        ports:
-          - 3306:3306
