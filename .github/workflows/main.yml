@@ -16,6 +16,8 @@ jobs:
           MYSQL_DATABASE: test
         ports:
           - 3306:3306
+    env:
+      RDB_URL: ${{ secrets.RDB_URL }}
 
     steps:
       - name: Checkout code
@@ -69,8 +71,6 @@ jobs:
           npm install -g prisma
           npx prisma generate
           npx prisma db push
-        env:
-          RDB_URL: ${{ secrets.RDB_URL }}
 
       - name: Run unit tests
         run: yarn test
@@ -83,7 +83,6 @@ jobs:
           MYSQL_PASSWORD: password
           MYSQL_DB: test
           GREETING: ${{ secrets.GREETING }}
-          RDB_URL: ${{ secrets.RDB_URL }}
 
       - name: Test post notification
         uses: 8398a7/action-slack@v3
