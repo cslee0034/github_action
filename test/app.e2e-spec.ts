@@ -21,4 +21,16 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello, World!');
   });
+
+  it('/ (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/')
+      .send({
+        email: 'test@email.com',
+        password: 'password',
+        firstName: 'Chang Su',
+        lastName: 'Lee',
+      })
+      .expect(201);
+  });
 });

@@ -64,6 +64,12 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
+      - name: Prisma setup
+        run: |
+          npm install -g prisma
+          npx prisma generate
+          npx prisma db push
+
       - name: Run unit tests
         run: yarn test
 
