@@ -143,11 +143,6 @@ jobs:
           BRANCH_NAME=${GITHUB_REF#refs/heads/release/}
           echo "IMAGE_TAG=${BRANCH_NAME}" >> $GITHUB_ENV
 
-      - name: Prisma setup
-        run: |
-          npm install -g prisma
-          npx prisma generate
-
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
