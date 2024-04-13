@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "container-nomadio-api",
-      "image": "200268860277.dkr.ecr.ap-northeast-2.amazonaws.com/nomad-io.api:0.0.1",
+      "image": "200268860277.dkr.ecr.ap-northeast-2.amazonaws.com/nomad-io.api:0.0.2",
       "cpu": 0,
       "portMappings": [
         {
