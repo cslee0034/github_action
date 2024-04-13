@@ -1,4 +1,4 @@
-name: Deploy to Develop Server
+name: Test and notify
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  unit-test-by-jest:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
