@@ -83,6 +83,7 @@ jobs:
           MYSQL_PASSWORD: password
           MYSQL_DB: test
           GREETING: ${{ secrets.GREETING }}
+          RDB_URL: ${{ secrets.RDB_URL }}
 
       - name: Test post notification
         uses: 8398a7/action-slack@v3
