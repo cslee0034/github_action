@@ -1,0 +1,60 @@
+name: Migration
+
+on:
+  push:
+    branches:
+      - migration
+
+jobs:
+  migration:
+    runs-on: ubuntu-latest
+    env:
+      RDB_URL: ${{ secrets.RDB_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Migration pre notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: workflow,repo,author
+          custom_payload: |
+            {
+              attachments: [{
+                color: 'good',
+                text: `${process.env.AS_WORKFLOW} at ${process.env.AS_REPO} by ${process.env.AS_AUTHOR}`,
+                fields: [{
+                  title: 'starting migration...',
+                  short: false
+                }]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+
+      - name: Prisma migration force reset
+        run: |
+          npm install -g prisma
+          npx prisma generate
+          npx prisma db push
+
+      - name: Migration post notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: job,took
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                text: `${process.env.AS_JOB} ${{ job.status }} in ${process.env.AS_TOOK}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
