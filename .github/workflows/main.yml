@@ -1,0 +1,76 @@
+name: Deploy to Develop Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Test pre notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: workflow,repo,author
+          custom_payload: |
+            {
+              attachments: [{
+                color: 'good',
+                text: `${process.env.AS_WORKFLOW} at ${process.env.AS_REPO} by ${process.env.AS_AUTHOR}`,
+                fields: [{
+                  title: 'starting test : ',
+                  value: `${{ env.commit_msg_str }}`,
+                  short: false
+                }]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+
+      - name: Install nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+
+      - name: Cache dependency
+        uses: actions/cache@v3
+        id: cache
+        with:
+          # 'node_modules를 캐싱
+          path: node_modules
+          # yarn.lock의 파일이 바뀔때마다 다시 캐싱
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Test post notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: job,took
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                text: `${process.env.AS_JOB} ${{ job.status }} in ${process.env.AS_TOOK}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
