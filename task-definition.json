@@ -1,5 +1,5 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:200268860277:task-definition/task-nomadio-api:1",
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:200268860277:task-definition/task-nomadio-api:6",
   "containerDefinitions": [
     {
       "name": "container-nomadio-api",
@@ -42,7 +42,7 @@
   "taskRoleArn": "arn:aws:iam::200268860277:role/ECS-full-access-role",
   "executionRoleArn": "arn:aws:iam::200268860277:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
-  "revision": 1,
+  "revision": 6,
   "volumes": [],
   "status": "ACTIVE",
   "requiresAttributes": [
@@ -86,7 +86,7 @@
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
   },
-  "registeredAt": "2024-04-13T17:25:20.730Z",
+  "registeredAt": "2024-04-13T19:07:07.165Z",
   "registeredBy": "arn:aws:iam::200268860277:root",
   "tags": []
 }
