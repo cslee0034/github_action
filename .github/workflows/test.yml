@@ -24,3 +24,13 @@ jobs:
           if [[ "$MIGRATION_COMMAND" == "test-command" ]]; then
             echo "test-command is executed"
           fi
+
+      - name: Connect to bastion server
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.BASTION_KEY }}
+          host: ${{ secrets.BASTION_HOST }}
+          username: ${{ secrets.BASTION_USER_NAME }}
+          port: ${{ secrets.BASTION_PORT }}
+          script: |
+            echo "Connected to bastion server"
