@@ -72,6 +72,7 @@ jobs:
             elif [[ "$MIGRATION_COMMAND" == "migrate" ]]; then
               sudo npx prisma migrate deploy
             elif [[ "$MIGRATION_COMMAND" == "seed" ]]; then
+              npm install ts-node
               sudo npx prisma generate
               chmod +x ./prisma/seed.ts
               sudo npx prisma db seed
