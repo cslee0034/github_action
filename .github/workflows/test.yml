@@ -13,24 +13,18 @@ jobs:
       RDB_URL: ${{ secrets.RDB_URL }}
 
     steps:
-      - name: Test
+      - name: Define Variables
         run: |
-          MIGRATION_COMMAND=${GITHUB_REF#refs/heads/test/}
-          echo "MIGRATION_COMMAND=${MIGRATION_COMMAND}" >> $GITHUB_ENV
-          REPO_NAME="${GITHUB_REPOSITORY##*/}"
-          echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
-          echo $MIGRATION_COMMAND
-          echo $REPO_NAME
-          if [[ "$MIGRATION_COMMAND" == "test-command" ]]; then
-            echo "test-command is executed"
-          fi
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
+          echo "MIGRATION_COMMAND=${GITHUB_REF#refs/heads/test/}" >> $GITHUB_ENV
+          echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+          echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
-      # 1. Connect to bastion server
-      # 2. Install git
-      # 3. Clone repository
-      # 4. Checkout branch
+      - name: Display Variables
+        run: |
+          echo "MIGRATION_COMMAND=$MIGRATION_COMMAND"
+          echo "REPO_NAME=$REPO_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME"
+
       - name: Connect to bastion server
         uses: appleboy/ssh-action@master
         env:
@@ -44,18 +38,22 @@ jobs:
           port: ${{ secrets.BASTION_PORT }}
           envs: REPO_NAME, BRANCH_NAME, MIGRATION_COMMAND
           script: |
-            echo "1. Connected to bastion server"
-            echo "2. Install git"
+            echo "#### 1. Connected to bastion server ####"
+
+            echo "#### 2. Install git ####"
             sudo dnf install git -y
-            echo "3. Clone repository"
+
+            echo "#### 3. Clone repository ####"
             cd ~
             if ls | grep -q "$REPO_NAME"; then
               echo "Directory already exists"
             else
               git clone ${{ secrets.GIT_REPOSITORY_URL }}
             fi
-            echo "4. Checkout branch"
+
+            echo "#### 4. Checkout and pull branch ####"
             cd $REPO_NAME
             git fetch
             git checkout $BRANCH_NAME || git checkout -b $BRANCH_NAME origin/$BRANCH_NAME
             echo "Checked out to $BRANCH_NAME"
+            git pull
