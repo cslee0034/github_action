@@ -40,7 +40,7 @@ jobs:
             echo "1. Connected to bastion server"
             echo "2. Install git"
             sudo dnf install git -y
-            echo "3. Clone repository
+            echo "3. Clone repository"
             cd ~
             if ls | grep -q "$REPO_NAME"; then
               echo "Directory already exists"
