@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Test
         run: |
-          MIGRATION_COMMAND=${GITHUB_REF#refs/heads/migration/}
+          MIGRATION_COMMAND=${GITHUB_REF#refs/heads/test/}
           echo "MIGRATION_COMMAND=${MIGRATION_COMMAND}" >> $GITHUB_ENV
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
           echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
