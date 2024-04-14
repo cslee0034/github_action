@@ -67,7 +67,7 @@ jobs:
             echo "#### 7. Run migration ####"
             if [[ "$MIGRATION_COMMAND" == "push" ]]; then
               npx prisma db push
-            if [[ "$MIGRATION_COMMAND" == "force-reset" ]]; then
+            elif [[ "$MIGRATION_COMMAND" == "force-reset" ]]; then
               sudo npx prisma db push --force-reset --skip-generate
             elif [[ "$MIGRATION_COMMAND" == "migrate" ]]; then
               npx prisma migrate deploy
