@@ -42,6 +42,7 @@ jobs:
           host: ${{ secrets.BASTION_HOST }}
           username: ${{ secrets.BASTION_USER_NAME }}
           port: ${{ secrets.BASTION_PORT }}
+          envs: REPO_NAME, BRANCH_NAME, MIGRATION_COMMAND
           script: |
             echo "BRANCH_NAME is  $INPUT_BRANCH_NAME"
             # echo "1. Connected to bastion server"
