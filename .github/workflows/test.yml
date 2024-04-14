@@ -34,3 +34,15 @@ jobs:
           port: ${{ secrets.BASTION_PORT }}
           script: |
             echo "Connected to bastion server"
+            git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic ${{ secrets.GH_TOKEN }}"
+            cd ~
+            if ls | grep -q 'github_action'; then
+              echo "Directory already exists"
+            else
+              git clone ${{ secrets.GIT_REPOSITORY_URL }}
+            fi
+            cd github_action
+            git fetch
+            branch_name=${GITHUB_REF#refs/heads/}
+            git checkout $branch_name || git checkout -b $branch_name origin/$branch_name
+            echo "Checked out to $branch_name"
