@@ -40,16 +40,15 @@ jobs:
             echo "1. Connected to bastion server"
             echo "2. Install git"
             sudo dnf install git -y
-            echo "3. Clone repository"
-            git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic ${{ secrets.GH_TOKEN }}"
+            echo "3. Clone repository
             cd ~
             if ls | grep -q "$REPO_NAME"; then
               echo "Directory already exists"
             else
               git clone ${{ secrets.GIT_REPOSITORY_URL }}
             fi
-            cd $REPO_NAME
             echo "4. Checkout branch"
+            cd $REPO_NAME
             git fetch
             branch_name=${GITHUB_REF#refs/heads/}
             git checkout $branch_name || git checkout -b $branch_name origin/$branch_name
