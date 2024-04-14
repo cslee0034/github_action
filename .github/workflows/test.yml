@@ -66,13 +66,13 @@ jobs:
 
             echo "#### 7. Run migration ####"
             if [[ "$MIGRATION_COMMAND" == "push" ]]; then
-              npx prisma db push
+              sudo npx prisma db push --skip-generate
             elif [[ "$MIGRATION_COMMAND" == "force-reset" ]]; then
               sudo npx prisma db push --force-reset --skip-generate
             elif [[ "$MIGRATION_COMMAND" == "migrate" ]]; then
-              npx prisma migrate deploy
+              sudo npx prisma migrate deploy --skip-generate
             elif [[ "$MIGRATION_COMMAND" == "seed" ]]; then
-              npx prisma db seed
+              sudo npx prisma db seed --skip-generate
             else
               echo "No specific command for this branch"
             fi
