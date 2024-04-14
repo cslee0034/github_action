@@ -44,20 +44,18 @@ jobs:
           port: ${{ secrets.BASTION_PORT }}
           envs: REPO_NAME, BRANCH_NAME, MIGRATION_COMMAND
           script: |
-            echo "BRANCH_NAME is $BRANCH_NAME"
-            # echo "1. Connected to bastion server"
-            # echo "2. Install git"
-            # sudo dnf install git -y
-            # echo "3. Clone repository"
-            # cd ~
-            # if ls | grep -q "$REPO_NAME"; then
-            #   echo "Directory already exists"
-            # else
-            #   git clone ${{ secrets.GIT_REPOSITORY_URL }}
-            # fi
-            # echo "4. Checkout branch"
-            # cd ${{ secrets.GIT_REPOSITORY_NAME }}
-            # git fetch
-            # branch_name=${GITHUB_REF#refs/heads/}
-            # git checkout $branch_name || git checkout -b $branch_name origin/$branch_name
-            # echo "Checked out to $branch_name"
+            echo "1. Connected to bastion server"
+            echo "2. Install git"
+            sudo dnf install git -y
+            echo "3. Clone repository"
+            cd ~
+            if ls | grep -q "$REPO_NAME"; then
+              echo "Directory already exists"
+            else
+              git clone ${{ secrets.GIT_REPOSITORY_URL }}
+            fi
+            echo "4. Checkout branch"
+            cd $REPO_NAME
+            git fetch
+            git checkout $BRANCH_NAME || git checkout -b $BRANCH_NAME origin/$BRANCH_NAME
+            echo "Checked out to $BRANCH_NAME
