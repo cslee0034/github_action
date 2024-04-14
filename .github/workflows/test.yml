@@ -17,4 +17,5 @@ jobs:
         run: |
           MIGRATION_COMMAND=${GITHUB_REF#refs/heads/migration/}
           echo "MIGRATION_COMMAND=${MIGRATION_COMMAND}" >> $GITHUB_ENV
-          echo "Repository Name: ${{ github.repository.name }}"
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
