@@ -52,7 +52,7 @@ jobs:
             echo "4. Checkout branch"
             cd ${{ secrets.GIT_REPOSITORY_NAME }}
             git fetch
-            echo BRANCH_NAME=${BRANCH_NAME}
+            echo "BRANCH_NAME=$BRANCH_NAME"
             branch_name=${GITHUB_REF#refs/heads/}
             git checkout $branch_name || git checkout -b $branch_name origin/$branch_name
             echo "Checked out to $branch_name"
