@@ -49,6 +49,7 @@ jobs:
             fi
             echo "4. Checkout branch"
             cd $REPO_NAME
+            pwd
             git fetch
             branch_name=${GITHUB_REF#refs/heads/}
             git checkout $branch_name || git checkout -b $branch_name origin/$branch_name
