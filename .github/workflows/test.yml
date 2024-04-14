@@ -58,4 +58,4 @@ jobs:
             cd $REPO_NAME
             git fetch
             git checkout $BRANCH_NAME || git checkout -b $BRANCH_NAME origin/$BRANCH_NAME
-            echo "Checked out to $BRANCH_NAME
+            echo "Checked out to $BRANCH_NAME"
