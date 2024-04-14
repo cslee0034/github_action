@@ -11,7 +11,7 @@ export class AppService {
   ) {}
 
   getHello(): string {
-    return this.configService.get('GREETING');
+    return 'Hello World!';
   }
 
   async createUser(createUserDto: CreateUserDto) {
