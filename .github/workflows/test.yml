@@ -65,3 +65,14 @@ jobs:
             sudo npm install -g prisma
 
             echo "#### 7. Run migration ####"
+            if [[ "$MIGRATION_COMMAND" == "push" ]]; then
+              npx prisma db push
+            if [[ "$MIGRATION_COMMAND" == "force-reset" ]]; then
+              npx prisma db push --force-reset
+            elif [[ "$MIGRATION_COMMAND" == "migrate" ]]; then
+              npx prisma migrate deploy
+            elif [[ "$MIGRATION_COMMAND" == "seed" ]]; then
+              npx prisma db seed
+            else
+              echo "No specific command for this branch"
+            fi
