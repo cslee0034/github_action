@@ -70,11 +70,11 @@ jobs:
             elif [[ "$MIGRATION_COMMAND" == "force-reset" ]]; then
               sudo npx prisma db push --force-reset --skip-generate
             elif [[ "$MIGRATION_COMMAND" == "migrate" ]]; then
-              sudo npx prisma migrate deploy --skip-generate
+              sudo npx prisma migrate deploy
             elif [[ "$MIGRATION_COMMAND" == "seed" ]]; then
               sudo npx prisma generate
               chmod +x ./prisma/seed.ts
-              sudo npx prisma db seed --skip-generate
+              sudo npx prisma db seed
             else
               echo "No specific command for this branch"
             fi
