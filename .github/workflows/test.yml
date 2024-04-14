@@ -48,7 +48,7 @@ jobs:
               git clone ${{ secrets.GIT_REPOSITORY_URL }}
             fi
             echo "4. Checkout branch"
-            cd $REPO_NAME
+            cd ${{ secrets.GIT_REPOSITORY_NAME }}
             pwd
             git fetch
             branch_name=${GITHUB_REF#refs/heads/}
