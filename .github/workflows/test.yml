@@ -21,3 +21,6 @@ jobs:
           echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
           echo $MIGRATION_COMMAND
           echo $REPO_NAME
+          if [[ "$MIGRATION_COMMAND" == "test-command" ]]; then
+            echo "test-command is executed"
+          fi
