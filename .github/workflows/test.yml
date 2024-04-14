@@ -62,6 +62,6 @@ jobs:
             echo "#### 6. Install npm and prisma ####"
             sudo dnf install nodejs -y
             sudo dnf install npm -y
-            npm install -g prisma
-            node -v
-            npm -v
+            sudo npm install -g prisma
+
+            echo "#### 7. Run migration ####"
