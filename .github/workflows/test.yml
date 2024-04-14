@@ -44,7 +44,7 @@ jobs:
           port: ${{ secrets.BASTION_PORT }}
           envs: REPO_NAME, BRANCH_NAME, MIGRATION_COMMAND
           script: |
-            echo "BRANCH_NAME is  $INPUT_BRANCH_NAME"
+            echo "BRANCH_NAME is $BRANCH_NAME"
             # echo "1. Connected to bastion server"
             # echo "2. Install git"
             # sudo dnf install git -y
