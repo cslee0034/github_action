@@ -1,4 +1,4 @@
-name: Excute migration command
+name: Test
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - test/*
 
 jobs:
-  migration:
+  test:
     runs-on: ubuntu-latest
     env:
       RDB_URL: ${{ secrets.RDB_URL }}
@@ -17,4 +17,4 @@ jobs:
         run: |
           MIGRATION_COMMAND=${GITHUB_REF#refs/heads/migration/}
           echo "MIGRATION_COMMAND=${MIGRATION_COMMAND}" >> $GITHUB_ENV
-          echo "Repository Name: ${{ github.repository }}"
+          echo "Repository Name: ${{ github.repository.name }}"
